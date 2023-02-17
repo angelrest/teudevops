@@ -1,0 +1,8 @@
+---
+collections:
+  - name: ansible.netcommon
+  - name: ansible.utils
+  - name: cisco.ios
+  - name: cisco.nxos
+  - name: lvrfrc87.git_acp
+
