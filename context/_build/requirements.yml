@@ -5,4 +5,5 @@ collections:
   - name: cisco.ios
   - name: cisco.nxos
   - name: lvrfrc87.git_acp
+  - name: octupus.o4n_azure_fileshare
 
