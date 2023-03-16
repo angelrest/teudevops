@@ -8,6 +8,5 @@ collections:
     version: "1.1.0"
   - name: octupus.o4n_dev_git
   - name: octupus.o4n_azure_fileshare
-  - name: git
-    version: "1.7.1"
+  - name: awx.awx
 
