@@ -9,4 +9,5 @@ collections:
   - name: octupus.o4n_dev_git
   - name: octupus.o4n_azure_fileshare
   - name: awx.awx
+  - name: ansible.posix
 
