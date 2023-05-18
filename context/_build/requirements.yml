@@ -5,7 +5,7 @@ collections:
   - name: cisco.ios
   - name: cisco.nxos
   - name: lvrfrc87.git_acp
-    version: "1.1.0"
+    version: '1.1.0'
   - name: octupus.o4n_dev_git
     version: "2.4.11"
   - name: octupus.o4n_azure_fileshare
