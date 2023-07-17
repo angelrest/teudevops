@@ -13,3 +13,4 @@ collections:
   - name: ansible.posix
   - name: ansible.windows
   - name: community.general
+  - name: manusl_networking.o4n_modules
