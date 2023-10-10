@@ -1,3 +1,0 @@
-check-jsonschema
-azure==4.0.0
-azure-storage-file-share>=12.11.0
