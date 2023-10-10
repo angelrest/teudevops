@@ -26,6 +26,7 @@ USER root
 RUN pip3 install --upgrade pip setuptools
 
 COPY --from=galaxy /usr/share/ansible /usr/share/ansible
+
 COPY --from=builder /output/ /output/
 RUN /output/install-from-bindep && rm -rf /output/wheels
 RUN ls -la /etc
