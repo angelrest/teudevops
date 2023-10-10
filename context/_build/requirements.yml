@@ -14,3 +14,5 @@ collections:
   - name: ansible.windows
   - name: community.general
   - name: manusl_networking.o4n_modules
+  - name: check_point.mgmt
+  - name: octupus.o4n_checkpoint
