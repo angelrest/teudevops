@@ -1,2 +1,14 @@
+check-jsonschema
+azure>=4.0.0
+azure-storage-file-share>=12.11.0
+pywinrm
+bigsuds==1.0.6
+suds
+jmespath
+ntc-templates
+textfsm
+requests
+urllib3
+json
 six
 psutil
