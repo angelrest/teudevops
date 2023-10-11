@@ -9,6 +9,5 @@ ntc-templates
 textfsm
 requests
 urllib3
-json
 six
 psutil
