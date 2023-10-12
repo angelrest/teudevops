@@ -1,4 +1,4 @@
-ARG EE_BASE_IMAGE="registry.access.redhat.com/ubi9/skopeo:9.2-15"
+ARG EE_BASE_IMAGE="fedora"
 ARG PYCMD="/usr/bin/python3"
 ARG PKGMGR_PRESERVE_CACHE=""
 ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS="--pre"
@@ -32,7 +32,6 @@ ARG ANSIBLE_GALAXY_CLI_ROLE_OPTS
 ARG ANSIBLE_INSTALL_REFS
 ARG PKGMGR
 
-# ADD _build/configs/ansible.cfg ~/.ansible.cfg
 RUN /output/scripts/check_galaxy
 COPY _build /build
 WORKDIR /build

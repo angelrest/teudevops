@@ -1,8 +1,9 @@
+suds-jurko
 check-jsonschema
-azure>=4.0.0
-azure-storage-file-share>=12.11.0
+azure==4.0.0
+azure-storage-file-share
 pywinrm
-bigsuds==1.0.6
+bigsuds
 suds
 jmespath
 ntc-templates
