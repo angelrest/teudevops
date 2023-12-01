@@ -16,3 +16,4 @@ collections:
   - name: octupus.o4n_checkpoint
   - name: f5networks.f5_modules
   - name: octupus.o4n_f5
+  - name: octupus.o4n_diff
