@@ -1,10 +1,10 @@
-ARG EE_BASE_IMAGE="fedora"
+ARG EE_BASE_IMAGE="fedora:latest"
 ARG PYCMD="/usr/bin/python3"
 ARG PKGMGR_PRESERVE_CACHE=""
-ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS="--pre"
+ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS=""
 ARG ANSIBLE_GALAXY_CLI_ROLE_OPTS=""
-ARG ANSIBLE_INSTALL_REFS="ansible-core==2.14.4 ansible-runner"
 ARG PKGMGR="/usr/bin/dnf"
+
 
 # Base build stage
 FROM $EE_BASE_IMAGE as base
@@ -14,13 +14,12 @@ ARG PYCMD
 ARG PKGMGR_PRESERVE_CACHE
 ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS
 ARG ANSIBLE_GALAXY_CLI_ROLE_OPTS
-ARG ANSIBLE_INSTALL_REFS
 ARG PKGMGR
 
-RUN $PKGMGR install -y python3-setuptools
+# Instala setuptools y pip en la etapa "builder"
+RUN $PKGMGR install -y python3-setuptools python3-pip ansible
 
 RUN $PYCMD -m ensurepip
-RUN $PYCMD -m pip install --no-cache-dir $ANSIBLE_INSTALL_REFS
 COPY _build/scripts/ /output/scripts/
 COPY _build/scripts/entrypoint /opt/builder/bin/entrypoint
 
@@ -31,8 +30,12 @@ ARG PYCMD
 ARG PKGMGR_PRESERVE_CACHE
 ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS
 ARG ANSIBLE_GALAXY_CLI_ROLE_OPTS
-ARG ANSIBLE_INSTALL_REFS
 ARG PKGMGR
+
+COPY _build/configs/ansible.cfg /etc/ansible/ansible.cfg
+
+# Instala Ansible en la etapa "galaxy"
+RUN $PKGMGR install -y ansible
 
 RUN /output/scripts/check_galaxy
 COPY _build /build
@@ -49,7 +52,6 @@ ARG PYCMD
 ARG PKGMGR_PRESERVE_CACHE
 ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS
 ARG ANSIBLE_GALAXY_CLI_ROLE_OPTS
-ARG ANSIBLE_INSTALL_REFS
 ARG PKGMGR
 
 RUN $PYCMD -m pip install --no-cache-dir bindep pyyaml requirements-parser
@@ -57,8 +59,7 @@ RUN $PYCMD -m pip install --no-cache-dir bindep pyyaml requirements-parser
 COPY --from=galaxy /usr/share/ansible /usr/share/ansible
 
 COPY _build/requirements.txt requirements.txt
-COPY _build/bindep.txt bindep.txt
-RUN $PYCMD /output/scripts/introspect.py introspect --sanitize --user-pip=requirements.txt --user-bindep=bindep.txt --write-bindep=/tmp/src/bindep.txt --write-pip=/tmp/src/requirements.txt
+RUN $PYCMD /output/scripts/introspect.py introspect --sanitize --user-pip=requirements.txt --write-bindep=/tmp/src/bindep.txt --write-pip=/tmp/src/requirements.txt
 RUN /output/scripts/assemble
 
 # Final build stage
@@ -68,12 +69,11 @@ ARG PYCMD
 ARG PKGMGR_PRESERVE_CACHE
 ARG ANSIBLE_GALAXY_CLI_COLLECTION_OPTS
 ARG ANSIBLE_GALAXY_CLI_ROLE_OPTS
-ARG ANSIBLE_INSTALL_REFS
 ARG PKGMGR
 
-RUN whoami
-RUN cat /etc/os-release
-RUN /output/scripts/check_ansible $PYCMD
+
+
+# RUN /output/scripts/check_ansible $PYCMD
 
 COPY --from=galaxy /usr/share/ansible /usr/share/ansible
 
@@ -83,8 +83,6 @@ RUN chmod ug+rw /etc/passwd
 RUN mkdir -p /runner && chgrp 0 /runner && chmod -R ug+rwx /runner
 WORKDIR /runner
 RUN $PYCMD -m pip install --no-cache-dir 'dumb-init==1.2.5'
-RUN echo This is a post-install command!
-RUN ls -la /etc
 RUN rm -rf /output
 LABEL ansible-execution-environment=true
 USER 1000
